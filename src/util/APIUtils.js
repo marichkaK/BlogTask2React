@@ -57,9 +57,10 @@ export function getArticles(startNumber, endNumber) {
     });
 }
 
-export function getArticlesCount() {
+export function createArticle(articleRequest) {
     return http({
-        url: API_BASE_URL + "/articles/count",
-        method: 'GET'
+        url: API_BASE_URL + "/articles",
+        method: 'POST',
+        body: JSON.stringify(articleRequest)
     });
 }

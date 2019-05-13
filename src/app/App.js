@@ -15,6 +15,7 @@ import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import './App.css';
+import NewArticle from "../user/profile/NewArticle";
 
 class App extends Component {
     constructor(props) {
@@ -88,7 +89,7 @@ class App extends Component {
                 <div className="app-body">
                     <Switch>
                         <Route exact path="/" component={Home}></Route>
-                        <PrivateRoute path="/profile/:startNumber/:endNumber"
+                        <PrivateRoute path="/profile/:pageNumber/:perPage"
                                       authenticated={this.state.authenticated}
                                       currentUser={this.state.currentUser}
                                       component={Profile}></PrivateRoute>
@@ -96,6 +97,10 @@ class App extends Component {
                                       authenticated={this.state.authenticated}
                                       currentUser={this.state.currentUser}
                                       component={Profile}></PrivateRoute>
+                        <PrivateRoute path="/newArticle"
+                                      authenticated={this.state.authenticated}
+                                      currentUser={this.state.currentUser}
+                                      component={NewArticle}></PrivateRoute>
                         <Route path="/login"
                                render={(props) => <Login authenticated={this.state.authenticated} {...props} />}></Route>
                         <Route path="/signup"
