@@ -50,9 +50,16 @@ export function signup(signupRequest) {
     });
 }
 
-export function getArticles(startNumber, endNumber) {
+export function getArticles(startNumber, endNumber, tag) {
     return http({
-        url: API_BASE_URL + "/articles/"+ startNumber + "/" + endNumber,
+        url: API_BASE_URL + "/articles/page/"+ startNumber + "/size/" + endNumber + "/tags/" + tag,
+        method: 'GET'
+    });
+}
+
+export function getArticle(id) {
+    return http({
+        url: API_BASE_URL + "/articles/" + id,
         method: 'GET'
     });
 }
@@ -62,5 +69,13 @@ export function createArticle(articleRequest) {
         url: API_BASE_URL + "/articles",
         method: 'POST',
         body: JSON.stringify(articleRequest)
+    });
+}
+
+export function addComment(articleId, comment) {
+    return http({
+        url: API_BASE_URL + "/articles/" + articleId + "/comments",
+        method: 'POST',
+        body: JSON.stringify(comment)
     });
 }

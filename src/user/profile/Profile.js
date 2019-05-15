@@ -3,6 +3,7 @@ import './Profile.css';
 import './Article.css';
 import {withRouter} from "react-router-dom";
 import {Articles} from "./Articles";
+import queryString from "query-string";
 
 class Profile extends Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class Profile extends Component {
 
         let pageNumber = parseInt(this.props.match.params.pageNumber);
         let perPage = parseInt(this.props.match.params.perPage);
+        let requestParams = queryString.parse(this.props.location.search);
 
         if (!perPage) {
             pageNumber = 0;
@@ -18,6 +20,7 @@ class Profile extends Component {
         }
 
         this.state = {
+            requestParams: requestParams,
             pageNumber: pageNumber,
             perPage: perPage
         };
@@ -25,7 +28,10 @@ class Profile extends Component {
 
     render() {
         return (
-            <Articles props={this.props} pageNumber={this.state.pageNumber} perPage={this.state.perPage} />
+            <Articles props={this.props}
+                      selectedTag={this.state.requestParams.tag ? this.state.requestParams.tag : 'none'}
+                      pageNumber={this.state.pageNumber}
+                      perPage={this.state.perPage} />
         );
     }
 }

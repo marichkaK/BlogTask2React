@@ -45,3 +45,30 @@
     color: #fff;
     font-size: 3em;
 }
+
+.blog-text, .article-page-content {
+    margin-top: 10px;
+}
+
+.per-page-select {
+    margin-bottom: 20px;
+}
+
+.profile-avatar img {
+    margin-top: 5px;
+    border-radius: 50%;
+    max-width: 50px;
+}
+
+.profile-name {
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.profile-email {
+    font-weight: 300;
+}
+
+.tag-component {
+    margin-left: 30px;
+}

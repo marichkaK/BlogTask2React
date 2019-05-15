@@ -16,6 +16,7 @@ import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import './App.css';
 import NewArticle from "../user/profile/NewArticle";
+import ArticlePage from "../user/profile/ArticlePage";
 
 class App extends Component {
     constructor(props) {
@@ -101,6 +102,10 @@ class App extends Component {
                                       authenticated={this.state.authenticated}
                                       currentUser={this.state.currentUser}
                                       component={NewArticle}></PrivateRoute>
+                        <PrivateRoute path="/articles/:articleId"
+                                      authenticated={this.state.authenticated}
+                                      currentUser={this.state.currentUser}
+                                      component={ArticlePage}></PrivateRoute>
                         <Route path="/login"
                                render={(props) => <Login authenticated={this.state.authenticated} {...props} />}></Route>
                         <Route path="/signup"
@@ -109,7 +114,7 @@ class App extends Component {
                         <Route component={NotFound}></Route>
                     </Switch>
                 </div>
-                <Alert stack={{limit: 3}}
+                <Alert stack={{limit: 1}}
                        timeout={3000}
                        position='top-right' effect='slide' offset={65}/>
             </div>

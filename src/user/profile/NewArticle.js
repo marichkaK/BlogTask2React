@@ -28,7 +28,7 @@ class NewArticle extends Component {
 
         createArticle(articleRequest)
         .then(response => {
-            Alert.success("You're successfully an article!");
+            Alert.success("You successfully created an article!");
             this.setState({
                 created: true
             });

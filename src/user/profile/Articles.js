@@ -15,10 +15,12 @@ export class Articles extends Component {
         this.canBackPage = this.canBackPage.bind(this);
         this.canNextPage = this.canNextPage.bind(this);
         this.setPerPage = this.setPerPage.bind(this);
+        this.changeTag = this.changeTag.bind(this);
 
         this.state = {
             articles: null,
             pageNumber: props.pageNumber,
+            selectedTag: props.selectedTag,
             perPage: props.perPage,
             loading: false,
             url: props.props.path,
@@ -26,8 +28,8 @@ export class Articles extends Component {
         };
     }
 
-    renderArticles(pageNumber, perPage) {
-        getArticles(pageNumber, perPage)
+    renderArticles(pageNumber, perPage, tag) {
+        getArticles(pageNumber, perPage, tag)
         .then(response => {
             let articleRows = [];
             let rowSize = this.state.perPage;
@@ -62,25 +64,23 @@ export class Articles extends Component {
     renderArticlesRow(articles) {
         const row = articles.map((article) => {
             article.created = new Date(article.created);
-            return Articles.renderArticle(article, this.state.currentUser)
+            return this.renderArticle(article, this.state.currentUser)
         });
 
         return (<div className="row">{row}</div>);
     };
 
-    static renderArticle(article, currentUser) {
+    renderArticle(article, currentUser) {
         return (
             <div className="col-lg-4 col-md-6 col-xs-12 blog-item">
                 <div className="blog-item-wrapper">
                     <div className="blog-item-img">
-                        <a href="single-post.html">
-                            <img src="img/blog/01.jpg" className="img-fluid" alt=""></img>
-                        </a>
                     </div>
                     <div className="blog-item-text">
-                        <h3><a href="single-post.html">{article.name}</a></h3>
+                        <h3><NavLink to={'/articles/' + article.id}><a>{article.name}</a></NavLink></h3>
                         <p>{article.content}</p>
-                        {article.tags.map(tag => <a href="" className="read-more">#{tag.name} </a>)}
+                        {article.tags.map(tag => <NavLink to={'/profile?tag=' + tag.name}>
+                            <a onClick={() => this.changeTag(tag.name)} className="read-more">#{tag.name} </a></NavLink>)}
                     </div>
                     <div className="author">
                         {
@@ -98,8 +98,19 @@ export class Articles extends Component {
         );
     };
 
+    changeTag(name) {
+        this.setState((state) => {
+            this.renderArticles(0, state.perPage, name);
+
+            return {
+                selectedTag: name,
+                pageNumber: 0
+            }
+        });
+    }
+
     componentDidMount() {
-        this.renderArticles(this.state.pageNumber, this.state.perPage);
+        this.renderArticles(this.state.pageNumber, this.state.perPage, this.state.selectedTag);
     }
 
     previousPage() {
@@ -108,7 +119,7 @@ export class Articles extends Component {
                 return;
             }
             let pageNumber = state.pageNumber - 1;
-            this.renderArticles(pageNumber, state.perPage);
+            this.renderArticles(pageNumber, state.perPage, state.selectedTag);
 
             return {
                 pageNumber: pageNumber
@@ -122,7 +133,7 @@ export class Articles extends Component {
                 return;
             }
             let pageNumber = state.pageNumber + 1;
-            this.renderArticles(pageNumber, state.perPage);
+            this.renderArticles(pageNumber, state.perPage, state.selectedTag);
 
             return {
                 pageNumber: pageNumber
@@ -144,7 +155,7 @@ export class Articles extends Component {
             perPage: parseInt(value)
         });
         this.setState((state) => {
-            this.renderArticles(0, state.perPage);
+            this.renderArticles(0, state.perPage, state.selectedTag);
 
             return {
                 pageNumber: 0
@@ -177,11 +188,28 @@ export class Articles extends Component {
                             </div>
                         </div>
                     </div>
-                    <select name="dropdown" defaultValue={this.state.perPage} onChange={this.setPerPage}>
-                        <option value="3">3 per page</option>
-                        <option value="6">6 per page</option>
-                        <option value="9">9 per page</option>
-                    </select>
+                    <div className="row">
+                        <div className="col-lg-1"/>
+                        <div className="col-lg-1">
+                            <select className="per-page-select" name="dropdown" defaultValue={this.state.perPage} onChange={this.setPerPage}>
+                                <option value="3">3 per page</option>
+                                <option value="6">6 per page</option>
+                                <option value="9">9 per page</option>
+                            </select>
+                        </div>
+                        <div className="col-lg-2 tag-component">
+                            {this.state.selectedTag === 'none' ?
+                                null
+                                :
+                                (
+                                    <NavLink onClick={() => this.changeTag('none')}
+                                             to={'/profile'}>
+                                        #{this.state.selectedTag}
+                                    </NavLink>
+                                )
+                            }
+                        </div>
+                    </div>
 
                     {this.state.articles === null ?
                         <div>Loading</div>
